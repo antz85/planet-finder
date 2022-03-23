@@ -3,6 +3,7 @@ const path = require("path");
 // npm imports
 const express = require('express')
 const cors = require('cors')
+const morgan = require('morgan')
 
 // local imports
 const planetsRouter = require('./routes/planets/planets.router')
@@ -15,6 +16,10 @@ const app = express();
 app.use(cors({
     origin: 'http://localhost:3000'
 }));
+
+// morgan
+app.use(morgan('combined'))
+
 // This is to be able to send json objects to POST methods
 app.use(express.json());
 
