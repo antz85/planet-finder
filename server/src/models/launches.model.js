@@ -15,13 +15,16 @@ const launch = {
 
 launches.set(launch.flightNumber, launch)
 
+function launchExists(flightNumber) {
+    return launches.has(flightNumber)
+}
+
 function getAllLaunches() {
     return Array.from(launches.values())
 }
 
 function getOneLaunch(flightNumber) {
-    const launchArray = Array.from(launches.values())
-    return launchArray.find(launch => launch.flightNumber === flightNumber)
+    return launches.get(flightNumber)
 }
 
 function addNewLaunch(launch) {
@@ -38,8 +41,17 @@ function addNewLaunch(launch) {
     );
 }
 
+function abortLaunch(flightNumber) {
+    const abortedLaunch = launches.get(flightNumber)
+    abortedLaunch.upcoming = false;
+    abortedLaunch.success = false;
+    return abortedLaunch;
+}
+
 module.exports = {
+    launchExists,
     getAllLaunches,
-    addNewLaunch,
     getOneLaunch,
+    addNewLaunch,
+    abortLaunch,
 }
