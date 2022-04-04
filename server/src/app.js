@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, '..', 'public')))
 
 // Mount the routers onto your application
 app.use(planetsRouter);
-app.use(launchesRouter);
+app.use('/launches', launchesRouter);
 
 // Send index.html to the path in the first argument
 app.get('/*', (req, res) => {
