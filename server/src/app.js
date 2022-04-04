@@ -7,6 +7,7 @@ const morgan = require('morgan')
 
 // local imports
 const planetsRouter = require('./routes/planets/planets.router')
+const launchesRouter = require('./routes/launches/launches.router')
 
 // use express
 const app = express();
@@ -29,9 +30,10 @@ app.use(express.static(path.join(__dirname, '..', 'public')))
 
 // Mount the routers onto your application
 app.use(planetsRouter);
+app.use(launchesRouter);
 
 // Send index.html to the path in the first argument
-app.get('/', (req, res) => {
+app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'))
 })
 
