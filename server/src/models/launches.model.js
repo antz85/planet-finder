@@ -1,6 +1,6 @@
 const launches = new Map();
 
-let latestFlightNumber = 100
+let latestFlightNumber = 100;
 
 const launch = {
     flightNumber: 100,
@@ -11,24 +11,24 @@ const launch = {
     customers: ['ZTM', 'NASA'],
     upcoming: true,
     success: true,
-}
+};
 
-launches.set(launch.flightNumber, launch)
+launches.set(launch.flightNumber, launch);
 
 function launchExists(flightNumber) {
-    return launches.has(flightNumber)
+    return launches.has(flightNumber);
 }
 
 function getAllLaunches() {
-    return Array.from(launches.values())
+    return Array.from(launches.values());
 }
 
 function getOneLaunch(flightNumber) {
-    return launches.get(flightNumber)
+    return launches.get(flightNumber);
 }
 
 function addNewLaunch(launch) {
-    latestFlightNumber++
+    latestFlightNumber++;
     launches.set(
         latestFlightNumber,
         {
@@ -42,7 +42,7 @@ function addNewLaunch(launch) {
 }
 
 function abortLaunch(flightNumber) {
-    const abortedLaunch = launches.get(flightNumber)
+    const abortedLaunch = launches.get(flightNumber);
     abortedLaunch.upcoming = false;
     abortedLaunch.success = false;
     return abortedLaunch;
@@ -54,4 +54,4 @@ module.exports = {
     getOneLaunch,
     addNewLaunch,
     abortLaunch,
-}
+};
