@@ -20,4 +20,4 @@ async function startServer() {
 
 startServer();
 
-module.exports = PORT
+// module.exports = PORT
