@@ -1,21 +1,21 @@
 const {
     getAllLaunches,
-    addNewLaunch,
+    scheduleNewLaunch,
     getOneLaunch,
     abortLaunch,
     launchExists,
 } = require('../../models/launches.model');
 
-function httpGetAllLaunches(req, res) {
-    res.status(200).json(getAllLaunches());
+async function httpGetAllLaunches(req, res) {
+    res.status(200).json(await getAllLaunches());
 }
 
-function httpGetOneLaunch(req, res) {
+async function httpGetOneLaunch(req, res) {
     const flightNumber = Number(req.params.flightNumber);
-    res.status(200).json(getOneLaunch(flightNumber));
+    res.status(200).json(await getOneLaunch(flightNumber));
 }
 
-function httpCreateLaunch(req, res) {
+async function httpCreateLaunch(req, res) {
     const launch = req.body;
     if (!launch.mission || !launch.rocket ||
         !launch.launchDate || !launch.target) {
@@ -29,19 +29,25 @@ function httpCreateLaunch(req, res) {
             error: 'Invalid date',
         });
     }
-    addNewLaunch(launch);
+    await scheduleNewLaunch(launch);
     return res.status(201).json(launch);
 }
 
-function httpAbortLaunch(req, res) {
+async function httpAbortLaunch(req, res) {
     const flightNumber = Number(req.params.flightNumber);
 
-    if (!launchExists(flightNumber)) {
+    if (!await launchExists(flightNumber)) {
         return res.status(400).json({
             error: 'Launch not found',
         });
     }
-    return res.status(200).json(abortLaunch(flightNumber));
+    const aborted = await abortLaunch(flightNumber);
+    if (!aborted) {
+        return res.status(400).json({
+            error: 'Launch not aborted',
+        });
+    }
+    return res.status(200).json(aborted);
 }
 
 module.exports = {

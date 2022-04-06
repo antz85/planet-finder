@@ -5,16 +5,16 @@ const launchesSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    launchDate: {
-        type: Date,
-        required: true,
-    },
     mission: {
         type: String,
         required: true,
     },
     rocket: {
         type: String,
+        required: true,
+    },
+    launchDate: {
+        type: Date,
         required: true,
     },
     target: {
@@ -24,10 +24,12 @@ const launchesSchema = new mongoose.Schema({
     customers: {
         type: [String],
         required: true,
+        default: ['ZTM', 'NASA'],
     },
     upcoming: {
         type: Boolean,
         required: true,
+        default: true,
     },
     success: {
         type: Boolean,

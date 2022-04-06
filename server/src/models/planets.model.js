@@ -5,13 +5,9 @@ const { parse } = require('csv-parse');
 
 const planets = require('./planets.mongo');
 
-const habitablePlanets = [];
-
 // Create criteria for a planet to be habitable
 function isHabitablePlanet(planet) {
-    return planet['koi_disposition'] === 'CONFIRMED'
-        && planet['koi_insol'] > 0.36 && planet['koi_insol'] < 1.11
-        && planet['koi_prad'] < 1.6;
+    return planet['koi_disposition'] === 'CONFIRMED' && planet['koi_insol'] > 0.36 && planet['koi_insol'] < 1.11 && planet['koi_prad'] < 1.6;
 }
 
 // IMPORTANT: Node will try to export this function before any of the data gets loaded
@@ -20,32 +16,42 @@ function loadPlanetsData() {
     return new Promise((resolve, reject) => {
         fs.createReadStream(path.join(__dirname, '..', '..', 'data', 'kepler_data.csv'))
             .pipe(parse({
-                comment: '#',
-                columns: true,
+                comment: '#', columns: true,
             }))
             .on('data', async (data) => {
                 if (isHabitablePlanet(data)) {
-                    // TODO: Replace below create with insert + update (upsert)
-                    // await planets.create({
-                    //     keplerName: data.kepler_name,
-                    // })
+                    await savePlanet(data);
                 }
             })
             .on('error', (err) => {
                 reject(err);
             })
-            .on('end', () => {
+            .on('end', async () => {
+                const numberOfPlanetsFound = (await getAllPlanets()).length;
+                console.log(`${numberOfPlanetsFound} habitable planets found!`);
                 resolve();
-                console.log(`${habitablePlanets.length} habitable planets found!`);
             });
     });
 }
 
-function getAllPlanets() {
-    return habitablePlanets;
+async function getAllPlanets() {
+    return planets.find({}, { '_id': 0, '__v': 0 });
+}
+
+async function savePlanet(planet) {
+    try {
+        await planets.updateOne({
+            keplerName: planet.kepler_name,
+        }, {
+            keplerName: planet.kepler_name,
+        }, {
+            upsert: true,
+        });
+    } catch (err) {
+        console.error(`Could not save planet: ${err}`);
+    }
 }
 
 module.exports = {
-    loadPlanetsData,
-    getAllPlanets,
+    loadPlanetsData, getAllPlanets,
 };
