@@ -11,7 +11,8 @@
     "client": "npm start --prefix client",
     "project": "npm run server & npm run client",
     "deploy": "npm run build --prefix client && npm start --prefix server",
-    "test": "npm test --prefix server && npm test --prefix client"
+    "test": "npm test --prefix server && npm test --prefix client",
+    "deploy:cluster": "npm run build --prefix client && npm run cluster --prefix server"
   },
   "repository": {
     "type": "git",
@@ -23,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/antz85/planet-finder/issues"
   },
-  "homepage": "https://github.com/antz85/planet-finder#readme"
+  "homepage": "https://github.com/antz85/planet-finder#readme",
+  "dependencies": {
+    "mongoose": "^6.2.10"
+  }
 }
