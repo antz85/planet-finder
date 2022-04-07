@@ -5,9 +5,7 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 
-// local imports
-const planetsRouter = require('./routes/planets/planets.router')
-const launchesRouter = require('./routes/launches/launches.router')
+const api = require('./routes/api')
 
 // use express
 const app = express();
@@ -28,9 +26,8 @@ app.use(express.json());
 // USE NODE TO SERVE A FRONTEND WEB APP by using 'express.static()' middleware (first argument is the path you want to use)
 app.use(express.static(path.join(__dirname, '..', 'public')))
 
-// Mount the routers onto your application
-app.use(planetsRouter);
-app.use('/launches', launchesRouter);
+// IMPORTANT: Mount the routers onto your application (MOVED TO api.js)
+app.use('/v1', api);
 
 // Send index.html to the path in the first argument
 app.get('/*', (req, res) => {
