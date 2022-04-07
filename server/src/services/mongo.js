@@ -13,6 +13,11 @@ async function connectToMongo() {
     await mongoose.connect(MONGO_URL);
 }
 
-module.exports = {
-    connectToMongo
+async function disconnectMongo() {
+    await mongoose.disconnect();
 }
+
+module.exports = {
+    connectToMongo,
+    disconnectMongo,
+};

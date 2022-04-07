@@ -1,11 +1,16 @@
 const request = require('supertest');
 const app = require('../../app');
 const { connectToMongo } = require('../../services/mongo');
+const { disconnectMongo } = require('../../services/mongo');
 
 describe('Testing Launches API', () => {
 
     beforeAll(async () => {
         await connectToMongo();
+    });
+
+    afterAll(async () => {
+        await disconnectMongo();
     });
 
     describe('Test GET /launches', () => {
