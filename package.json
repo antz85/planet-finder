@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/antz85/planet-finder#readme",
   "dependencies": {
+    "axios": "^0.26.1",
     "mongoose": "^6.2.10"
   }
 }
