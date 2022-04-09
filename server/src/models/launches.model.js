@@ -2,6 +2,7 @@ const axios = require('axios');
 
 const launchesDatabase = require('./launches.mongo');
 const planetsRepo = require('./planets.mongo');
+const launchDataRepo = require('./launchDownloadDates.mongo');
 
 const DEFAULT_FLIGHT_NUMBER = 100;
 const SPACEX_API_URL = 'https://api.spacexdata.com/v4/launches/query';
@@ -104,9 +105,10 @@ async function populateLaunches() {
     });
     if (response.status !== 200) {
         console.log('Problem downloading launch data');
-        throw new Error('Launch data download failed')
+        throw new Error('Launch data download failed');
     }
     const launchDocs = response.data.docs;
+
     for (const launchDoc of launchDocs) {
         const customers = launchDoc.payloads.flatMap(payload => payload.customers);
         const launch = spacexLaunch(
@@ -123,15 +125,15 @@ async function populateLaunches() {
 }
 
 async function loadLaunchData() {
-    const firstLaunch = await findLaunch({
-        flightNumber: 1,
-        rocket: 'Falcon 1',
-        mission: 'FalconSat',
-    });
-    if (firstLaunch) {
-        console.log('Launch data already loaded!');
-    } else {
+    const today = new Date();
+    const launchesDownloadDate = {
+        month: today.getMonth(),
+        year: today.getFullYear(),
+    };
+    const findDate = await launchDataRepo.findOne(launchesDownloadDate);
+    if (!findDate) {
         await populateLaunches();
+        await launchDataRepo.updateOne(launchesDownloadDate, launchesDownloadDate, { upsert: true });
     }
 }
 
