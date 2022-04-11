@@ -1,11 +1,11 @@
 // IMPORTANT: Think of the router as the controller in NestJS
 
-const express = require('express')
+const express = require('express');
 
-const {httpGetAllPlanets} = require('./planets.controller')
+const { httpGetAllPlanets } = require('./planets.controller');
 
 const planetsRouter = express.Router();
 
-planetsRouter.get('/', httpGetAllPlanets)
+planetsRouter.get('/', httpGetAllPlanets);
 
-module.exports = planetsRouter
+module.exports = planetsRouter;

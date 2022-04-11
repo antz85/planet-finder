@@ -7,13 +7,12 @@ const launchDataRepo = require('./launchDownloadDates.mongo');
 const DEFAULT_FLIGHT_NUMBER = 100;
 const SPACEX_API_URL = 'https://api.spacexdata.com/v4/launches/query';
 
-function spacexLaunch(flightNumber, mission, rocket, launchDate,/* target,*/ customers, upcoming, success) {
+function spacexLaunch(flightNumber, mission, rocket, launchDate, customers, upcoming, success) {
     return {
         flightNumber, //SpaceX data -> flight_number
         mission, //SpaceX data -> name
         rocket, //SpaceX data -> rocket.name
         launchDate, //SpaceX data -> date_local
-        // target, //SpaceX data -> N/A
         customers, //SpaceX data -> payloads.customers for each payload
         upcoming, //SpaceX data -> upcoming
         success, //SpaceX data -> success
@@ -52,10 +51,12 @@ async function getLatestFlightNumber() {
     return latestLaunch.flightNumber + 1;
 }
 
-function getAllLaunches() {
+function getAllLaunches(skip, limit) {
     return launchesDatabase
         .find({}, { '_id': 0, '__v': 0 })
-        .sort('-flightNumber');
+        .sort('-flightNumber')
+        .skip(skip)
+        .limit(limit);
 }
 
 async function getOneLaunch(flightNumber) {

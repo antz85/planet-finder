@@ -9,4 +9,4 @@ const launchDownloadDatesSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model('LaunchDownloadDate', launchDownloadDatesSchema);
+module.exports = mongoose.model('Launch_Download_Date', launchDownloadDatesSchema);
