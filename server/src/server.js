@@ -1,5 +1,8 @@
 // Global imports
-const http = require('http');
+const https = require('http');
+
+// get you .env file to work
+// DISCUSS: require('dotenv').config(); moved to mongo.js file
 
 // Local imports
 const app = require('./app');
@@ -11,7 +14,7 @@ const { loadLaunchData } = require('./models/launches.model');
 const PORT = process.env.PORT || 8000;
 
 // Create server
-const server = http.createServer(app);
+const server = https.createServer(app);
 
 async function startServer() {
     await connectToMongo();
