@@ -34,11 +34,7 @@ async function planetExists(planet) {
 }
 
 async function launchExists(flightNumber) {
-    return await findLaunch(flightNumber);
-}
-
-async function findLaunch(filter) {
-    return launchesDatabase.findOne(filter);
+    return launchesDatabase.findOne({ flightNumber });
 }
 
 async function getLatestFlightNumber() {
