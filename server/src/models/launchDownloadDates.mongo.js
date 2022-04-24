@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const launchDownloadDatesSchema = new mongoose.Schema({
     month: {
-        type: Number,
+        type: String,
     },
     year: {
         type: Number,

@@ -124,7 +124,7 @@ async function populateLaunches() {
 async function loadLaunchData() {
     const today = new Date();
     const launchesDownloadDate = {
-        month: today.getMonth(),
+        month: today.toLocaleString('default', { month: "long" }),
         year: today.getFullYear(),
     };
     const findDate = await launchDataRepo.findOne(launchesDownloadDate);
